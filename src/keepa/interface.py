@@ -1363,7 +1363,7 @@ class Keepa:
         domain: Union[str, Domain] = "US",
         wait=True,
         n_products=50,
-    ) -> List[str]:
+    ) -> Tuple[List[str], int]:
         """Query the keepa product database to find products matching criteria.
 
         Almost all product fields can be searched for and sorted.
@@ -1453,7 +1453,7 @@ class Keepa:
         }
 
         response = self._request("query", payload, wait=wait)
-        return response["asinList"]
+        return response["asinList"], response["totalResults"]
 
     def deals(self, deal_parms, domain: Union[str, Domain] = "US", wait=True) -> dict:
         """Query the Keepa API for product deals.
@@ -1998,7 +1998,7 @@ class AsyncKeepa:
         domain: Union[str, Domain] = "US",
         wait=True,
         n_products=50,
-    ) -> List[str]:
+    ) -> Tuple[List[str], int]:
         """Documented by Keepa.product_finder."""
         if isinstance(product_parms, dict):
             product_parms_valid = ProductParams(**product_parms)
@@ -2012,7 +2012,7 @@ class AsyncKeepa:
         }
 
         response = await self._request("query", payload, wait=wait)
-        return response["asinList"]
+        return response["asinList"], response["totalResults"]
 
     @is_documented_by(Keepa.deals)
     async def deals(self, deal_parms, domain: Union[str, Domain] = "US", wait=True):
